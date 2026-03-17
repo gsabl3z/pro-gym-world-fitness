@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+
+  postgres:
+    image: postgres:15
+    container_name: progym_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: gym
+      POSTGRES_PASSWORD: gym123
+      POSTGRES_DB: progym
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    container_name: progym_redis
+    ports:
+      - "6379:6379"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: progym_pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@progym.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
